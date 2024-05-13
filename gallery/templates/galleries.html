@@ -1,0 +1,32 @@
+{% extends 'pages/dashboard.html' %}
+{% load static %}
+{% block content %}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Galleries</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            {% if galleries %}
+                {% for gallery in galleries %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="{{ gallery.cover_image.url }}" class="card-img-top" alt="{{ gallery.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ gallery.title }}</h5>
+                                <p class="card-text">{{ gallery.description }}</p>
+                                <a href="{% url 'gallery:detail' gallery.slug %}" class="btn btn-primary">View Gallery</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12">
+                    <h3>There are no galleries yet :(</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

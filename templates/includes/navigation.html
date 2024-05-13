@@ -1,0 +1,74 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+                <button type="button" class="navbar-toggler">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </button>
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">{{segment}}</a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav ml-auto">
+                <li class="input-group d-flex align-items-center mb-0">
+                    <label class="switch theme-switch">
+                        <input type="checkbox" class="bsc" checked="">
+                        <span class="slider"></span>
+                    </label>
+                </li>
+                
+                    
+                <li class="dropdown nav-item">
+                    <a href="{% url 'admin:logout' %}" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <div class="photo">
+                            <img src="{% static 'assets/img/anime3.png' %}" alt="Profile Photo">
+                        </div>
+                        <b class="caret d-none d-lg-block d-xl-block"></b>
+                        <p class="d-lg-none">
+                            Authentication
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu dropdown-navbar">
+
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-link"><a href="{% url 'index' %}" class="dropdown-item">Profile</a>
+                            </li>
+                            {% if request.user.is_superuser %}
+                            <li class="nav-link"><a href="{% url 'admin:password_change' %}" class="dropdown-item">
+                                    Change Password</a>
+                            </li>
+                            <li>
+                                <form class="nav-link" method="post" action="{% url 'admin:logout' %}">
+                                    {% csrf_token %}
+                                    <button class="dropdown-item" type="submit">Logout</button>
+                                </form>
+                            </li>
+                            {% else %}
+
+                            <li class="nav-link"><a href="{% url 'password_change' %}" class="dropdown-item">
+                                    <i class="feather icon-lock"></i> Change Password</a></li>
+                            <li class="nav-link"><a href="{% url 'logout' %}" class="dropdown-item"><i class="feather icon-lock"></i>
+                                    Logout</a></li>
+                            {% endif %}
+                        {% else %}
+                        <li class="nav-link"><a href="{% url 'auth_signin' %}" class="dropdown-item">Log in</a>
+                        </li>
+                        <li class="nav-link"><a href="{% url 'auth_signup' %}" class="dropdown-item">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="separator d-lg-none"></li>
+            </ul>
+        </div>
+    </div>
+</nav>

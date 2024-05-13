@@ -1,0 +1,12 @@
+# Django
+Django==5.0.6
+django-admin-black==1.0.9
+django-browser-reload==1.12.1
+# Postgres
+# psycopg2-binary
+# Settings.py
+python-dotenv==1.0.1
+str2bool==1.1
+# ?? static file something
+whitenoise==6.6.0
+pillow==10.3.0
