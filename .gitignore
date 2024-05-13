@@ -8,7 +8,9 @@
 /node_modules/
 build/
 env
+#static files
 /staticfiles/
+*.jpg
 shell_commands.py
 
 #src

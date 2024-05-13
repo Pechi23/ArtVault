@@ -40,7 +40,7 @@
                     <ul class="dropdown-menu dropdown-navbar">
 
                         {% if request.user.is_authenticated %}
-                            <li class="nav-link"><a href="{% url 'index' %}" class="dropdown-item">Profile</a>
+                            <li class="nav-link"><a href="{% url 'gallery:index' %}" class="dropdown-item">Galleries</a>
                             </li>
                             {% if request.user.is_superuser %}
                             <li class="nav-link"><a href="{% url 'admin:password_change' %}" class="dropdown-item">

@@ -1,0 +1,15 @@
+{% extends 'pages/dashboard.html' %}
+
+{% block title %}Edit Gallery{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h4>Edit Gallery</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <a href="{% url 'gallery:detail' slug=gallery.slug %}" class="btn btn-primary">Cancel</a>
+</div>
+{% endblock %}

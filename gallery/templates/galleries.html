@@ -3,21 +3,17 @@
 {% block content %}
     <div class="content">
         <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center">Galleries</h1>
-                <hr>
-            </div>
-        </div>
-        <div class="row">
             {% if galleries %}
                 {% for gallery in galleries %}
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="{{ gallery.cover_image.url }}" class="card-img-top" alt="{{ gallery.title }}">
+                            {% if gallery.cover %}
+                                <img src="{{ gallery.cover.url }}" class="card-img-top img-thumbnail" alt="{{ gallery.title }}">
+                            {% endif %}
                             <div class="card-body">
-                                <h5 class="card-title">{{ gallery.title }}</h5>
+                                <h4 class="card-title">{{ gallery.title }}</h4>
                                 <p class="card-text">{{ gallery.description }}</p>
-                                <a href="{% url 'gallery:detail' gallery.slug %}" class="btn btn-primary">View Gallery</a>
+                                <a href="{% url 'gallery:detail' slug=gallery.slug %}" class="btn btn-primary">View Gallery</a>
                             </div>
                         </div>
                     </div>
@@ -28,5 +24,31 @@
                 </div>
             {% endif %}
         </div>
-    </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create Gallery</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group" hx-swap="outerHTML">
+                                <label for="title">Title</label>
+                                <input type="text" name="title" id="title" class="form-control">
+                            </div>
+                            <div class="form-group" hx-swap="outerHTML">
+                                <label for="description">Description</label>
+                                <textarea name="description" id="description" class="form-control"></textarea>
+                            </div>
+                            <div hx-swap="outerHTML">
+                                <label for="cover">Cover</label>
+                                <input type="file" name="cover" id="cover" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-success">Create Gallery</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 {% endblock %}

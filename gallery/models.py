@@ -13,23 +13,32 @@ class TimeStamp(models.Model):
 
 
 class Gallery(TimeStamp):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField(upload_to='gallery')
+    cover = models.ImageField(upload_to='static/images/')
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField(unique=True, null=True, blank=True)
     
+    
     def save(self, *args, **kwargs):
         self.slug = self.title.lower().replace(' ', '-')
-        super(self).save(*args, **kwargs)
+        super(Gallery, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
-    
+
+class Image(TimeStamp):
+    gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE, 
+                                related_name='images',
+                                null=True, blank=True)
+    image = models.ImageField(upload_to='static/images/')
+
+    def __str__(self):
+        return str(self.image)
 
 class Comment(TimeStamp):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField()
 

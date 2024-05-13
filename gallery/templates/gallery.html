@@ -1,0 +1,99 @@
+{% extends 'pages/dashboard.html' %}
+
+{% block title %}Gallery{% endblock %}
+
+{% block content %}
+<style>
+    .cardspn{
+        width: 200px;
+        height: auto;
+    }
+</style>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title">{{gallery.title}} gallery</h1>
+                    <h3>{{ gallery.description }}</h3>
+                    <br>
+                    {% if gallery.user == request.user %}
+                        <a href="{% url 'gallery:edit' slug=gallery.slug %}" class="btn btn-alert">Edit Gallery</a>
+                        <a href="{% url 'gallery:delete' slug=gallery.slug %}" class="btn btn-danger">Delete Gallery</a>
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex justify-content-start">
+                    {% for image in images %}
+                        <div class="card cardspn mx-2">
+                            <img src="{{ image.image.url }}" class="img-thumbnail" alt="Image">
+                            {% if request.user == gallery.user %}
+                                <a href="{% url 'gallery:delete_image' slug=gallery.slug pk=image.id %}" class="btn btn-danger">Delete</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    <div>
+                        <h4>Images: {{ images.count }}</h4>
+                        {% if gallery.user == request.user %}
+                            <form hx-post="{% url 'gallery:add_image' slug=gallery.slug %}" hx-target="closest div" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div hx-swap="outerHTML">
+                                    <label for="image">Image</label>
+                                    <input type="file" name="image" id="image" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Add image</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <h5>Created: {{ gallery.created_at }}</h5>
+                    <h5>Updated: {{ gallery.updated_at }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-body">Views: {{ gallery.views }}</h4>
+                    <div class="card-body">
+                        <h4>Likes: {{ likes.count }}</h4>
+                        {% if not is_liked %}
+                            <button class="btn btn-success" name="like" hx-post="{% url 'gallery:like' slug=gallery.slug %}" hx-target="closest div" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Like</button>
+                        {% else %}
+                            <button class="btn btn-danger" name="like" hx-delete="{% url 'gallery:like' slug=gallery.slug %}" hx-target="closest div" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Unlike</button>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h4>Comments: {{ comments.count }}</h4>
+                            <form hx-post="{% url 'gallery:comment' gallery.slug %}" hx-target="closest div" >
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <textarea name="comment" id="content" class="form-control" placeholder="Write your comment here" required></textarea>
+                                    <button type="submit" class="btn btn-success">Comment</button>
+                                </div>
+                            </form>
+                        </div>
+                        {% for comment in comments %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4>{{ comment.user.username }}</h4>
+                                            <h5>{{ comment.comment }}</h5>
+                                            <p>{{ comment.created_at }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

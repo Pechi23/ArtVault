@@ -1,7 +1,7 @@
 {% load i18n static admin_black %}
 <ul class="nav">
   <li class="{% if 'dashboard' in segment %} active {% endif %}">
-    <a href="{% url 'index' %}">
+    <a href="{% url 'gallery:index' %}">
       <i class="tim-icons icon-chart-pie-36"></i>
       <p>Galleries</p>
     </a>
