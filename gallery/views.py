@@ -6,7 +6,7 @@ from .models import Gallery, Image, Comment, Like, Follow
 from .forms import GalleryForm # type: ignore
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 
 class GalleryListView(ListView):
     model = Gallery
@@ -148,6 +148,12 @@ class GalleryCommentView(LoginRequiredMixin, DetailView):
         gallery = Gallery.objects.get(slug=slug)
         comment = gallery.comments.create(user=request.user, comment=request.POST.get('comment'))
         return render(request, self.template_name, context={'comment': comment})
+    
+    def delete(self, request, slug=None, pk=None):
+        gallery = Gallery.objects.get(slug=slug)
+        comment = gallery.comments.get(pk=pk)
+        comment.delete()
+        return HttpResponse('Comment deleted.')
     
 class GalleryLikeView(LoginRequiredMixin, DetailView):
     model = Like

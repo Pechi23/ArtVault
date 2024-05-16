@@ -16,4 +16,5 @@ urlpatterns = [
     path('gallery/<slug:slug>/delete', GalleryDeleteView.as_view(), name='delete'),
     path('gallery/<slug:slug>/like', GalleryLikeView.as_view(), name='like'),
     path('gallery/<slug:slug>/comment', GalleryCommentView.as_view(), name='comment'),
+    path('gallery/<slug:slug>/delete-comment/<int:pk>', GalleryCommentView.as_view(), name='delete_comment'),
 ]

@@ -1,19 +1,15 @@
-<div>
-    <div class="alert alert-success">
-        <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
-          <i class="tim-icons icon-simple-remove"></i>
-        </button>
-        <span><b> Success - </b> Comment added </span>
-    </div>
+<div onloadstart="demo.showNotification('bottom','right','Comment added')">
+    
     <h4>Comments: {{ comment.gallery.comments.count }}</h4>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-body">
-                    <h5>{{ comment.user.username }}</h5>
-                    <p>{{ comment.comment }}</p>
-                    <p>{{ comment.created_at }}</p>
-                </div>
+                <h4>{{ comment.user.username }}</h4>
+                <h5>{{ comment.comment }}</h5>
+                <p>{{ comment.created_at }}</p>
+                {% if comment.user == request.user %}
+                    <button hx-delete="{% url 'gallery:delete_comment' slug=comment.gallery.slug pk=comment.id %}" hx-target="closest div" class="btn btn-danger" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' onclick="demo.showNotification('bottom','right','Comment successfully deleted')">Delete</button>
+                {% endif %}
             </div>
         </div>
     </div>
