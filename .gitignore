@@ -9,8 +9,7 @@
 build/
 env
 #static files
-/staticfiles/
-*.jpg
+/static/
 shell_commands.py
 
 #src
