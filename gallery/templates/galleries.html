@@ -14,6 +14,7 @@
                                 <h4 class="card-title">{{ gallery.title }}</h4>
                                 <p class="card-text">{{ gallery.description }}</p>
                                 <a href="{% url 'gallery:detail' slug=gallery.slug %}" class="btn btn-primary">View Gallery</a>
+                                <h5 class="card-text">Views: {{ gallery.views }}</h5>
                             </div>
                         </div>
                     </div>

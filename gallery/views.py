@@ -15,7 +15,7 @@ class GalleryListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Gallery.objects.all().order_by('-created_at')
+        return Gallery.objects.all().order_by('-views')
     
     def post(self, request):
         if not request.user.is_authenticated:
