@@ -24,7 +24,7 @@ class GalleryListView(ListView):
         return redirect('gallery:detail', slug=gallery.slug)
 
 
-class GalleryDetailView(LoginRequiredMixin ,DetailView):
+class GalleryDetailView(DetailView):
     model = Gallery
     template_name = 'gallery.html'
     context_object_name = 'gallery'
@@ -37,7 +37,8 @@ class GalleryDetailView(LoginRequiredMixin ,DetailView):
         context['comments'] = self.object.comments.all().order_by('-created_at')
         context['likes'] = self.object.likes.all()
         context['images'] = self.object.images.all()
-        context['is_liked'] = self.object.likes.filter(user=self.request.user).exists()
+        if self.request.user.is_authenticated:
+            context['is_liked'] = self.object.likes.filter(user=self.request.user).exists()
         return context
     
     def get(self, request, slug=None):
@@ -164,7 +165,8 @@ class GalleryLikeView(LoginRequiredMixin, DetailView):
         gallery.likes.create(user=request.user)
         context = {
             'gallery': gallery,
-            'message': 'liked'
+            'message': 'liked',
+            'is_liked': gallery.likes.filter(user=self.request.user).exists()
         }
             
         return render(request, self.template_name, context=context)
@@ -174,6 +176,7 @@ class GalleryLikeView(LoginRequiredMixin, DetailView):
         gallery.likes.filter(user=request.user).delete()
         context = {
             'gallery': gallery,
-            'message': 'unliked'
+            'message': 'unliked',
+            'is_liked': gallery.likes.filter(user=self.request.user).exists()
         }
         return render(request, self.template_name, context=context)

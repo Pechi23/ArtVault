@@ -1,5 +1,5 @@
 <div class="card cardspn" onloadstart="demo.showNotification('bottom','right','Image added')" >
-    <h4>Images: {{ image.gallery.images.count }}</h4>
     <img src="{{ image.image.url }}" class="img-thumbnail" alt="{{ image.title }}">
     <a href="{% url 'gallery:delete_image' slug=image.gallery.slug pk=image.id %}" class="btn btn-danger">Delete</a>
+    <h4>Images: {{ image.gallery.images.count }}</h4>
 </div>
