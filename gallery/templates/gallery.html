@@ -5,7 +5,7 @@
 {% block content %}
 <style>
     .cardspn{
-        width: 200px;
+        width: 1000px;
         height: auto;
     }
 </style>
@@ -22,7 +22,7 @@
                         <a href="{% url 'gallery:delete' slug=gallery.slug %}" class="btn btn-danger">Delete Gallery</a>
                     {% endif %}
                 </div>
-                <div class="card-body d-flex justify-content-start">
+                <div class="card-body">
                     {% for image in images %}
                         <div class="card cardspn mx-2">
                             <img src="{{ image.image.url }}" class="img-thumbnail" alt="Image">
